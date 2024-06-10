@@ -1,0 +1,24 @@
+FROM registry.cn-hangzhou.aliyuncs.com/tekton/ubuntu:22.04-arm64
+RUN apt-get update -y
+RUN apt-get upgrade -y
+RUN apt-get install -y curl git unzip xz-utils zip libglu1-mesa file libnotify-dev libayatana-appindicator3-dev
+RUN apt-get install -y clang cmake git ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev
+
+## flutter tool
+RUN apt install -y rpm patchelf wget
+
+RUN cd /root/ && wget https://github.com/leoafarias/fvm/releases/download/3.1.7/fvm-3.1.7-linux-arm64.tar.gz && tar -zxvf /root/fvm-3.1.7-linux-arm64.tar.gz -C/usr/local/ && rm -rf /root/fvm-3.1.7-linux-arm64.tar.gz
+RUN /usr/local/fvm/fvm config --cache-path="/usr/local/fvm"
+RUN /usr/local/fvm/fvm install 3.19.2 && chown -R root:root /usr/local/
+ENV PUB_HOSTED_URL=https://pub.flutter-io.cn
+ENV FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
+RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf > rustup.sh && sh rustup.sh -y && echo 'source $HOME/.cargo/env' >> /etc/bash.bashrc
+ENV PATH="/usr/local/fvm/versions/3.19.2/bin:$PATH"
+
+## flutter_distributor tool
+RUN dart pub global activate flutter_distributor && chown -R root:root /usr/local/ && chown -R root:root /root
+ENV PATH="$PATH:/root/.pub-cache/bin"
+
+## flutter cache
+## COPY ./pubspec.yaml /root/
+## RUN cd /root/ && flutter pub get && chown -R root:root /usr/local/ && chown -R root:root /root
