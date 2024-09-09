@@ -25,7 +25,10 @@ build_arch: x86_64
 ```
 
 ```
-docker run -it --rm -v <your repo>:/root/<your repo name> <image-name>:<image-tag> bash
+## amd环境
+docker run -it --rm -v <your repo>:/root/<your repo name> registry.cn-hangzhou.aliyuncs.com/tekton/linux-flutter-build:fedora-38-amd64 bash
+## arm环境
+docker run -it --rm -v <your repo>:/root/<your repo name> registry.cn-hangzhou.aliyuncs.com/tekton/linux-flutter-build:fedora-38-arm64 bash
 $ cd /root/<your repo name>
 $ flutter pub get
 $ flutter_distributor package --platform linux --targets rpm
