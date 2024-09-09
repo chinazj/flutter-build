@@ -7,7 +7,10 @@
 直接使用下面命令构建deb
 
 ```
-docker run -it --rm -v <your repo>:/root/<your repo name> <image-name>:<image-tag> bash
+## 如果是amd使用下面的命令
+docker run -it --rm -v <your repo>:/root/<your repo name> registry.cn-hangzhou.aliyuncs.com/tekton/linux-flutter-build:ubuntu-20.04-amd64 bash
+## 如果是arm使用下面的命令
+docker run -it --rm -v <your repo>:/root/<your repo name> registry.cn-hangzhou.aliyuncs.com/tekton/linux-flutter-build:ubuntu-20.04-arm64 bash
 $ cd /root/<your repo name>
 $ flutter pub get
 $ flutter_distributor package --platform linux --targets deb
